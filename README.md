@@ -155,56 +155,207 @@ npm run dev
 
 ## Features
 
-### User Features
-- ✅ User registration and login with JWT
-- ✅ Token persistence across page reloads
-- ✅ Auto-login if valid token exists
-- ✅ Create, read, update, delete contacts
-- ✅ Rich contact fields (name, phone, email, company, job title, tags, notes, etc.)
-- ✅ Merge duplicate contacts with intelligent field preservation
-- ✅ Generate QR codes for contacts
-- ✅ Share contacts via public URL
-- ✅ Send contact via SMS (Twilio)
-- ✅ Private notes (not shown in shared contacts)
-- ✅ Responsive UI for mobile and desktop
+### 📊 Dashboard Analytics
+- Real-time contact statistics
+- Total contacts count
+- Contacts with email tracking
+- Contacts with phone tracking
+- Contacts with company info tracking
+- Beautiful gradient stat cards
 
-### Admin Features
-- ✅ Single admin account (pre-configured)
-- ✅ View all registered users
-- ✅ See contact count per user
-- ✅ No access to private contact details
+### 👤 User Features
+- User registration and login with JWT authentication
+- Persistent login (token saved for regular users)
+- Auto-redirect to dashboard if already logged in
+- Create, read, update, and delete contacts
+- Rich contact fields: name, phone, email, company, job title, tags, avatar, notes
+- Contact search and filtering
+- Beautiful modern UI with gradient cards and animations
 
-### Security Features
-- ✅ JWT tokens (7-day expiration)
-- ✅ Bcrypt password hashing
-- ✅ Protected routes with middleware
-- ✅ Admin-only routes
-- ✅ Helmet security headers
-- ✅ Rate limiting
-- ✅ CORS enabled
+### 🔄 Contact Management
+- Smart contact merging (combines duplicate contacts)
+- Intelligent field preservation (keeps all non-empty fields)
+- Bulk contact selection for merging
+- Visual feedback with SweetAlert2 confirmations
+- Delete contacts with confirmation dialogs
 
-## Color Theme
+### 🔗 Sharing Features
+- Generate QR codes for any contact
+- Create shareable public URLs
+- Copy URL to clipboard with visual feedback
+- SMS sharing via native phone app (no backend SMS service needed)
+- Share URLs include all contact details except private notes
 
-The app uses a minimal two-color palette plus white:
-- **Primary**: #1E3A8A (Deep Professional Blue)
-- **Neutral**: #6B7280 (Grey)
-- **Background**: White
+### 👨‍💼 Admin Panel
+- Separate admin login portal
+- View all registered users
+- Monitor contact counts per user
+- System-wide analytics (total users, total contacts, averages)
+- Admin tokens NOT persisted (must login each session)
+- Light mode professional dashboard
+- Admin badge in navigation bar
 
-## API Documentation
+### 🔒 Security
+- JWT authentication with 7-day expiration
+- Bcrypt password hashing (10 rounds)
+- Protected routes with auth middleware
+- Admin-only route protection
+- Helmet security headers
+- Express rate limiting
+- CORS enabled with proper configuration
+- Auto-logout on token expiration
 
-See `backend/README.md` for complete API endpoint documentation.
+### 🎨 UI/UX
+- Modern gradient backgrounds (blue-purple theme)
+- Responsive design for all screen sizes
+- Smooth animations and transitions
+- Hover effects on interactive elements
+- Toast notifications for success messages
+- Modal alerts for confirmations and errors
+- Loading states with spinners
+- Empty states with helpful messages
+- Lucide-react icons throughout
+- Consistent color scheme (Primary: #1E3A8A, Neutral: #6B7280)
+
+## Screenshots
+
+### User Dashboard
+- Modern analytics cards showing contact statistics
+- Quick action cards with hover animations
+- Gradient backgrounds and professional design
+
+### Contact List
+- Card-based layout with avatars
+- Edit and delete actions with icons
+- Tags display for easy categorization
+
+### Merge Contacts
+- Visual selection with purple borders
+- Selected contacts highlighted with check marks
+- Confirmation dialog before merging
+
+### Share Contact
+- QR code generation with preview
+- Copy-to-clipboard with visual feedback
+- SMS sharing opens native app
+
+### Admin Dashboard
+- Light mode professional interface
+- User management table
+- System statistics overview
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User/Admin login
+- `GET /api/auth/me` - Get current user
+
+### Contacts
+- `GET /api/contacts` - Get user's contacts
+- `POST /api/contacts` - Create contact
+- `GET /api/contacts/:id` - Get single contact
+- `PUT /api/contacts/:id` - Update contact
+- `DELETE /api/contacts/:id` - Delete contact
+- `POST /api/contacts/merge` - Merge multiple contacts
+- `GET /api/contacts/:id/qr` - Generate QR code
+- `GET /api/contacts/:id/share` - Get shareable contact
+- `POST /api/contacts/:id/sms` - Send SMS (deprecated - use frontend SMS intent)
+
+### Admin (Protected)
+- `GET /api/admin/users` - Get all users
+- `GET /api/admin/users/:id/contacts/count` - Get user's contact count
+
+## Environment Variables
+
+### Backend (.env)
+```env
+PORT=4000
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname
+JWT_SECRET=random_secure_secret_key_minimum_32_characters
+ADMIN_EMAIL=prince@gmail.com
+ADMIN_PASSWORD=123456
+API_BASE_URL=http://localhost:4000
+```
+
+### Frontend (.env)
+```env
+VITE_API_BASE_URL=http://localhost:4000/api
+```
+
+## Project Structure Details
+
+- **backend/src/config/** - Database connection
+- **backend/src/models/** - Mongoose schemas (User, Contact, MergeLog)
+- **backend/src/controllers/** - Business logic
+- **backend/src/middlewares/** - Auth and admin verification
+- **backend/src/routes/** - API route definitions
+- **frontend/src/components/** - Reusable UI components
+- **frontend/src/pages/** - Page components (routes)
+- **frontend/src/services/** - API calls and auth logic
+- **frontend/src/store/** - Zustand state management
+
+## Key Features Implementation
+
+### Persistent Login (Users Only)
+- Regular users: Token saved to localStorage
+- Admin users: Token NOT saved (session-based)
+- Auto-redirect if valid token exists on login/register pages
+
+### Smart Contact Merging
+- Select 2+ contacts to merge
+- All non-empty fields are preserved
+- First contact's ID is kept as primary
+- Merge log saved for tracking
+
+### SMS Sharing
+- Uses `sms:` URL scheme to open native SMS app
+- Pre-fills message with contact URL
+- No backend SMS service required (cost-free)
+
+### SweetAlert2 Integration
+- Success notifications (toast style, top-right)
+- Error alerts (centered modal with custom HTML)
+- Confirmation dialogs for destructive actions
+- Auto-dismiss for success messages
 
 ## Development Notes
 
-- No code comments included (as per specification)
-- Production-ready with error handling
-- JWT automatically attached to requests
-- Token validation on protected routes
-- Admin auto-created on first server start
-- Merge feature keeps all non-empty fields
-- Share URLs valid for 30 days
-- QR codes generated server-side
+- Clean code without comments (as specified)
+- ES6 modules throughout
+- React hooks for state management
+- Protected routes with higher-order components
+- Axios interceptors for automatic token attachment
+- Form validation with react-hook-form
+- Responsive Tailwind classes
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Author
+
+**Prince** - [GitHub Profile](https://github.com/Prince200510)
+
+## Repository
+
+[https://github.com/Prince200510/IP_5th_Sem_Contact_App](https://github.com/Prince200510/IP_5th_Sem_Contact_App)
 
 ## License
 
-MIT
+MIT License - Feel free to use this project for learning and development.
+
+---
+
+**Built with ❤️ for IP 5th Semester Project**
