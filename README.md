@@ -351,11 +351,3 @@ VITE_API_BASE_URL=http://localhost:4000/api
 ## Repository
 
 [https://github.com/Prince200510/IP_5th_Sem_Contact_App](https://github.com/Prince200510/IP_5th_Sem_Contact_App)
-
-## License
-
-MIT License - Feel free to use this project for learning and development.
-
----
-
-**Built with ❤️ for IP 5th Semester Project**
